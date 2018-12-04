@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
 
-export const getAdmin = state => state.admin;
+const getAdmin = state => state.admin;
+const adminIsOpen = admin => admin.isOpen;
 
-export const getIsOpen = createSelector(getAdmin, admin => {
-  return admin.isOpen;
-});
+export const getIsOpen = createSelector(getAdmin, adminIsOpen);
