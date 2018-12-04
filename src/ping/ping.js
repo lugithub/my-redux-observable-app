@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { ping, timer } from './actions';
+import { getIsPing, getTimestamp} from './selectors';
 
 // ping is the action dispatching function, not the action creator any more
 // however, the arguments will still be passed to the action creator
@@ -56,8 +57,16 @@ const mapDispatchToProps = {
 //   }, dispatch);
 // }
 
+
+// return is called stateProps.
+
+function mapState(state, ownProps) {
+  const isPinging = getIsPing(state);
+  return { isPinging };
+}
+
 Ping = connect(
-  ({ ping: { isPinging } }) => ({ isPinging }),
+  mapState,
   mapDispatchToProps
 )(Ping);
 

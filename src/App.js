@@ -3,10 +3,20 @@ import { connect } from 'react-redux';
 
 import Ping from './ping/ping';
 import './App.css';
+import { getTimestamp } from './ping/selectors';
 
-let App = ({ timestamp }) => <Ping timestamp={timestamp}/>;
+import Foo from './admin/foo';
 
-const mapStateToProps = ({ ping: { timestamp }}) => ( { timestamp });
+let App = ({ timestamp }) => (<React.Fragment>
+  <Ping timestamp={timestamp}/>
+  <Foo />
+</React.Fragment>);
+
+
+const mapStateToProps = state => {
+  const timestamp = getTimestamp(state);
+  return { timestamp };
+};
 
 App = connect(mapStateToProps)(App);
 
