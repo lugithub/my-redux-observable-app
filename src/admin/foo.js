@@ -6,7 +6,7 @@ import { toggle } from './actions';
 
 import './admin.css';
 
-let Foo = ( { isOpen, toggle }) => (<div className="admin">
+export let Foo = ( { isOpen, toggle }) => (<div className="admin">
   admin {isOpen.toString()}
   <div>
     <button
@@ -28,6 +28,4 @@ const mapDispatch = {
   toggle,
 }
 
-Foo = connect(mapState, mapDispatch)(Foo);
-
-export default Foo;
+export default connect(mapState, mapDispatch)(Foo);
