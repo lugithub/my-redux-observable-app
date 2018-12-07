@@ -1,4 +1,5 @@
-import { throttleTime } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { concatMap, delay, throttleTime } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 
 import { pingEpic } from '../epics';
@@ -46,6 +47,32 @@ describe('pingEpic', () => {
       expectObservable(output$).toBe(expected, {a: {type: PONG}});
       expectSubscriptions(action$.subscriptions).toBe(subs);
     });    
+  });
+
+  it('should generate time progression', () => {
+    scheduler.run(helpers => {
+      const { cold, expectObservable } = helpers;
+      const input = ' -a 10ms b-c|';
+      const expected = '-- 9ms a 10ms b 9ms (c|)';
+
+      /*      
+      // Depending on your personal preferences you could also
+      // use frame dashes to keep vertical aligment with the input
+      const input = ' -a-b-c|';
+      const expected = '------- 4ms a 9ms b 9ms (c|)';
+      // or
+      const expected = '-----------a 9ms b 9ms (c|)';      
+      */
+      
+      const result = cold(input).pipe(
+        concatMap(d => of(d).pipe(
+          delay(10)
+        ))
+      );
+      
+      expectObservable(result).toBe(expected);    
+    });    
+
   });
 
   it('generate the stream correctly 2', () => {
